@@ -1,0 +1,119 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Sync Jobs" currentPage="Sync Jobs" breadcrumb="Sync Jobs">
+  <h1>Sync Jobs</h1>
+  <p class="doc-lead">
+    A sync job defines what to sync, where to sync it, when to run, and how to behave when
+    things change. Jobs persist across container restarts and can be managed entirely from
+    the web UI.
+  </p>
+
+  <h2>Creating a job</h2>
+  <p>
+    Click <strong>New Job</strong> on the Sync Jobs page to open the five-step wizard.
+  </p>
+
+  <div class="doc-screenshot-placeholder">New job wizard screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h3>Step 1 — Name &amp; mode</h3>
+  <p>Give the job a name and choose a sync mode (see below).</p>
+
+  <h3>Step 2 — Source</h3>
+  <p>
+    Choose a local directory path or a configured <a href={u('/docs/mounts')}>network mount</a>
+    as the source. For local paths, type the absolute path directly. For mounts, select from
+    the dropdown of configured mounts.
+  </p>
+
+  <h3>Step 3 — Destination</h3>
+  <p>Same options as source — local path or a configured mount.</p>
+
+  <h3>Step 4 — Schedule &amp; triggers</h3>
+  <p>Choose how the job is triggered:</p>
+  <table class="doc-table">
+    <thead><tr><th>Trigger</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Manual</strong></td><td>Job only runs when you click Run</td></tr>
+      <tr><td><strong>Cron</strong></td><td>Standard cron expression, e.g. <code>0 2 * * *</code> for 2 am daily</td></tr>
+      <tr><td><strong>Watch</strong></td><td>Monitors the source directory with inotify/FSEvents; runs after a 3-second quiet period following any change</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Cron triggers and watch triggers are re-registered automatically after a container restart.
+  </p>
+
+  <h3>Step 5 — Review &amp; create</h3>
+  <p>Confirm your settings. The job is created in <code>idle</code> state.</p>
+
+  <h2>Sync modes</h2>
+
+  <h3>one-way-backup</h3>
+  <p>
+    Files are copied from source to destination. Files deleted from the source are
+    <strong>not</strong> removed from the destination — the destination is an ever-growing archive.
+    Safe for backup scenarios where you never want data lost at the destination.
+  </p>
+
+  <h3>one-way-mirror</h3>
+  <p>
+    The destination is kept as an exact mirror of the source. When a file is deleted from
+    the source it is moved to the destination's quarantine directory
+    (<code>.tidemarq-quarantine/</code>) rather than being permanently deleted.
+    Files in quarantine are restorable from the Quarantine view.
+  </p>
+
+  <h3>two-way</h3>
+  <p>
+    Changes propagate in both directions — source to destination and destination to source.
+    Two-way sync is supported for local filesystem paths only; jobs with network mount
+    endpoints fall back to <code>one-way-backup</code> automatically.
+  </p>
+  <p>
+    When the same file is modified on both sides since the last sync, a conflict is raised.
+    See <a href={u('/docs/conflicts')}>Conflicts</a> for how conflicts are handled.
+  </p>
+
+  <h2>Job states</h2>
+  <table class="doc-table">
+    <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>idle</code></td><td>Ready and waiting for the next trigger</td></tr>
+      <tr><td><code>running</code></td><td>Actively transferring files</td></tr>
+      <tr><td><code>paused</code></td><td>Mid-transfer pause; resumes from a safe checkpoint on next trigger</td></tr>
+      <tr><td><code>error</code></td><td>Last run failed; details in the job detail view</td></tr>
+      <tr><td><code>disabled</code></td><td>Triggers suspended; will not run until re-enabled</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Live progress</h2>
+  <p>
+    Open a job's detail page while it is running to see live progress via WebSocket:
+    files transferred, bytes written, current transfer rate, ETA, and the file currently
+    being processed. No page refresh required.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Job detail progress screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h2>Pausing &amp; resuming</h2>
+  <p>
+    Click <strong>Pause</strong> on the job detail page while a job is running. The engine
+    checks for pause signals between file transfers and at chunk boundaries within large files,
+    so the pause takes effect promptly without corrupting an in-progress transfer.
+    The job resumes from the same checkpoint on the next trigger.
+  </p>
+
+  <h2>Bandwidth limiting</h2>
+  <p>
+    Set a rate limit (KB/s) on the job to throttle transfers. This applies per-file during
+    the copy phase. Leave blank for unlimited.
+  </p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>Running the same job twice with no file changes produces zero mutations — the
+    engine compares source and destination hashes before writing anything.</p>
+  </div>
+</DocsLayout>

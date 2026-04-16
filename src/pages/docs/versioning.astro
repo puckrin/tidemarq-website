@@ -1,0 +1,87 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Version History" currentPage="Version History" breadcrumb="Version History">
+  <h1>Version History</h1>
+  <p class="doc-lead">
+    Before tidemarq overwrites a file at the destination it snapshots the existing copy.
+    Those snapshots are browsable and restorable from the UI for as long as the configured
+    retention period allows.
+  </p>
+
+  <h2>How versioning works</h2>
+  <p>
+    Every time a sync job writes a new version of a file to the destination, the current
+    destination copy is moved to the version store at:
+  </p>
+  <div class="doc-codeblock">
+    <pre><span class="code-val">&lt;data_dir&gt;</span>/versions/<span class="code-val">&lt;jobID&gt;</span>/<span class="code-val">&lt;relPath&gt;</span>/<span class="code-val">&lt;timestamp&gt;</span></pre>
+  </div>
+  <p>
+    This happens before the write, so a crash mid-transfer cannot leave the destination
+    in an inconsistent state without a recoverable prior version.
+  </p>
+
+  <h2>Viewing versions</h2>
+  <p>
+    From a job's detail page, click <strong>Version History</strong> to browse all
+    snapshotted versions for that job. Each entry shows the file path, size, and the
+    timestamp of the snapshot. You can filter by filename or date range.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Version history screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h2>Restoring a version</h2>
+  <p>
+    Click <strong>Restore</strong> next to any version entry. tidemarq copies the snapshot
+    back to its original destination path, first creating a new version snapshot of the
+    current state so the restore itself is reversible.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">✓</span>
+    <p>Restoring a version is fully reversible — the file that gets overwritten by the
+    restore is itself snapshotted before writing.</p>
+  </div>
+
+  <h2>Retention</h2>
+  <p>
+    Version snapshots are retained for the number of days set in <code>retention.version_history_days</code>
+    (default: 90). A background task removes expired snapshots during idle periods.
+  </p>
+  <p>Configure retention in <code>tidemarq.yaml</code>:</p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">retention:</span>
+  <span class="code-key">version_history_days:</span> <span class="code-val">90</span></pre>
+  </div>
+
+  <h2>Quarantine</h2>
+  <p>
+    Quarantine is separate from version history. When a file is deleted from the source
+    in <code>one-way-mirror</code> or <code>two-way</code> mode, instead of being
+    permanently deleted from the destination it is moved to a
+    <code>.tidemarq-quarantine/</code> subdirectory at the destination root.
+  </p>
+  <p>
+    Quarantined files are tracked in the database and visible in the
+    <strong>Quarantine</strong> view, where they can be restored or permanently deleted.
+    Retention is controlled by <code>retention.quarantine_days</code> (default: 30).
+  </p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>tidemarq never permanently deletes a file from the destination without first moving
+    it to quarantine. Hard deletion from the destination filesystem is never performed
+    directly by the sync engine.</p>
+  </div>
+
+  <h2>Storage considerations</h2>
+  <p>
+    Version snapshots and quarantine entries consume space in the data directory and at
+    the destination respectively. Size depends on your file change rate and retention
+    settings. Monitor disk usage and adjust <code>retention.*_days</code> values accordingly.
+  </p>
+</DocsLayout>

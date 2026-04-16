@@ -1,0 +1,56 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Documentation" currentPage="Overview">
+  <h1>tidemarq documentation</h1>
+  <p class="doc-lead">
+    tidemarq is a self-hosted directory sync tool with a browser-based UI. It runs as a
+    Docker Compose stack with no external cloud dependencies.
+  </p>
+
+  <h2>What's in these docs</h2>
+  <p>
+    These pages walk through installing and configuring tidemarq, then cover each feature
+    in enough depth to use it confidently. For the full configuration reference, see
+    <code>tidemarq.example.yaml</code> in the repository — every option is documented there.
+  </p>
+
+  <h2>Quick navigation</h2>
+
+  <h3>Getting started</h3>
+  <ul>
+    <li><a href={u('/docs/installation')}>Installation</a> — prerequisites, Docker Compose setup, first login</li>
+    <li><a href={u('/docs/configuration')}>Configuration</a> — the config file, key settings, environment variable overrides</li>
+  </ul>
+
+  <h3>Features</h3>
+  <ul>
+    <li><a href={u('/docs/jobs')}>Sync Jobs</a> — creating jobs, sync modes, triggers, bandwidth limits</li>
+    <li><a href={u('/docs/mounts')}>Mounts</a> — SMB and SFTP mount setup</li>
+    <li><a href={u('/docs/conflicts')}>Conflicts</a> — detection, auto-resolution strategies, manual review</li>
+    <li><a href={u('/docs/versioning')}>Version History</a> — snapshots, quarantine, restoring files</li>
+    <li><a href={u('/docs/audit')}>Audit Log</a> — searching, filtering, exporting</li>
+  </ul>
+
+  <h2>Architecture in brief</h2>
+  <p>
+    tidemarq is a Go binary that serves a React SPA. State lives in a SQLite database in the
+    configured data directory. File integrity uses BLAKE3 by default (SHA-256 is available
+    per-job for compatibility). Local syncs use a rolling Adler-32 + BLAKE3 delta algorithm
+    so only changed byte regions are written. Network mounts (SMB, SFTP) fall back to full
+    streaming copies.
+  </p>
+  <p>
+    The backend exposes a REST API under <code>/api/v1/</code> and a WebSocket endpoint at
+    <code>/ws</code> for live progress streaming. All endpoints except <code>/health</code>
+    require a valid JWT.
+  </p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>tidemarq is built for <code>linux/amd64</code> and <code>linux/arm64</code> (including Raspberry Pi).
+    The pure-Go build has no CGO dependency.</p>
+  </div>
+</DocsLayout>

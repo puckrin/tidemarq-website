@@ -1,0 +1,88 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+<DocsLayout title="Mounts" currentPage="Mounts" breadcrumb="Mounts">
+  <h1>Mounts</h1>
+  <p class="doc-lead">
+    Mounts let you use SMB shares and SFTP servers as job sources or destinations.
+    A mount is a named, reusable connection — configure it once, then reference it in
+    any number of jobs.
+  </p>
+
+  <h2>The Mounts page</h2>
+  <p>
+    Navigate to <strong>Mounts</strong> in the sidebar to see all configured mounts,
+    their connection status, and management actions. From here you can add new mounts,
+    edit existing ones, test connectivity, and delete mounts that are no longer needed.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Mounts view screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h2>SMB mounts</h2>
+  <p>
+    SMB (Server Message Block) mounts connect to Windows file shares and NAS devices
+    that expose a CIFS/SMB endpoint.
+  </p>
+
+  <h3>Adding an SMB mount</h3>
+  <ol>
+    <li>Click <strong>Add Mount</strong> and select <strong>SMB</strong></li>
+    <li>Enter a name for the mount (used to identify it in the job wizard)</li>
+    <li>Enter the server hostname or IP address</li>
+    <li>Enter the share name (e.g. <code>backup</code> for <code>\\server\backup</code>)</li>
+    <li>Optionally enter a subdirectory path within the share</li>
+    <li>Enter a username and password</li>
+    <li>Click <strong>Test connection</strong> to verify before saving</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">✓</span>
+    <p>Use the <strong>Test connection</strong> button before saving a mount. It verifies
+    that tidemarq can reach the share and authenticate successfully.</p>
+  </div>
+
+  <h2>SFTP mounts</h2>
+  <p>
+    SFTP mounts connect to any SSH server with SFTP subsystem support — Linux servers,
+    NAS devices, and cloud VMs alike.
+  </p>
+
+  <h3>Adding an SFTP mount</h3>
+  <ol>
+    <li>Click <strong>Add Mount</strong> and select <strong>SFTP</strong></li>
+    <li>Enter a name, hostname, and port (default: 22)</li>
+    <li>Enter a username</li>
+    <li>Choose authentication: <strong>password</strong> or <strong>SSH key</strong></li>
+    <li>For SSH key auth, paste the private key contents into the key field</li>
+    <li>Optionally set the remote base path (defaults to the user's home directory)</li>
+    <li>Test and save</li>
+  </ol>
+
+  <h3>SSH key authentication</h3>
+  <p>
+    SSH private keys (RSA, Ed25519) are supported. The key is stored encrypted at rest
+    using AES-256-GCM alongside the other mount credentials. Paste the full PEM-encoded
+    private key, including the <code>-----BEGIN ... KEY-----</code> header and footer.
+  </p>
+
+  <div class="callout callout-warning">
+    <span class="callout-icon">⚠</span>
+    <p>Network mounts do not support two-way sync. Jobs with a mount as either source or
+    destination will use <code>one-way-backup</code> mode regardless of the configured
+    sync mode.</p>
+  </div>
+
+  <h2>Credential security</h2>
+  <p>
+    All mount credentials — SMB passwords, SFTP passwords, and SSH private keys — are
+    encrypted at rest using AES-256-GCM before being written to the database. The
+    encryption key is derived from the application's JWT secret, which is itself persisted
+    to <code>&lt;data_dir&gt;/.jwt_secret</code> and never transmitted anywhere.
+  </p>
+
+  <h2>Deleting a mount</h2>
+  <p>
+    A mount can only be deleted if it is not referenced by any existing job. Remove or
+    reconfigure all jobs using the mount first, then delete it from the Mounts page.
+  </p>
+</DocsLayout>

@@ -1,0 +1,49 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<section class="deploy-section">
+  <div class="container">
+    <div class="section-label" style="text-align:center">Quick start</div>
+    <h2 class="section-heading" style="text-align:center">Running in minutes.</h2>
+    <p class="section-sub" style="text-align:center; margin: 0 auto 56px;">
+      tidemarq is distributed as a Docker Compose stack. There's no package to install
+      and no database to set up manually.
+    </p>
+
+    <div class="deploy-steps">
+      <div class="deploy-step">
+        <div class="step-num">1</div>
+        <h3>Clone &amp; configure</h3>
+        <p>Clone the repo and copy <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">tidemarq.example.yaml</code> to <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">tidemarq.yaml</code></p>
+      </div>
+      <div class="deploy-step">
+        <div class="step-num">2</div>
+        <h3>Start the stack</h3>
+        <p>Run <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">docker compose up --build</code> — TLS and admin credentials are generated automatically</p>
+      </div>
+      <div class="deploy-step">
+        <div class="step-num">3</div>
+        <h3>Open the UI</h3>
+        <p>Browse to <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">https://localhost:8717</code> and log in with the credentials shown in the startup log</p>
+      </div>
+    </div>
+
+    <div class="code-block" style="text-align:left">
+      <div class="code-block-label">docker-compose.yml (excerpt)</div>
+      <pre><span class="code-key">services:</span>
+  <span class="code-key">tidemarq:</span>
+    <span class="code-key">build:</span> <span class="code-val">.</span>
+    <span class="code-key">ports:</span>
+      <span class="code-val">- "8716:8716"</span>   <span class="code-comment"># HTTP → redirects to HTTPS</span>
+      <span class="code-val">- "8717:8717"</span>   <span class="code-comment"># HTTPS — main UI and API</span>
+    <span class="code-key">volumes:</span>
+      <span class="code-val">- ./data:/data</span>  <span class="code-comment"># persistent state</span>
+      <span class="code-val">- ./tidemarq.yaml:/etc/tidemarq/tidemarq.yaml:ro</span></pre>
+    </div>
+
+    <div style="text-align:center; margin-top: 36px;">
+      <a href={u('/docs/installation')} class="btn btn-primary">Read the full install guide</a>
+    </div>
+  </div>
+</section>

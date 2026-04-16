@@ -1,0 +1,31 @@
+:root {
+  /* Teal palette */
+  --deep-teal:   #062C36;
+  --dark-teal:   #0A4452;
+  --mid-teal:    #0E5F6E;
+  --bright-teal: #1A8A9E;
+  --light-teal:  #5DC4D4;
+  --pale-teal:   #A3DDE6;
+  --ghost-teal:  #E0F4F7;
+
+  /* Accents */
+  --amber:        #C27D1A;
+  --amber-light:  #F5C842;
+  --coral:        #C4432A;
+  --coral-light:  #F28B74;
+  --violet:       #5B3FA6;
+  --violet-light: #A98FE0;
+  --grass:        #2E7D4F;
+  --grass-light:  #7EC99A;
+
+  /* Neutrals */
+  --slate:        #3D5166;
+  --slate-light:  #8DA5B8;
+  --black:        #111111;
+  --dark-text:    #2C2C2A;
+  --mid-text:     #5F5E5A;
+  --light-border: #D3D1C7;
+  --white:        #FFFFFF;
+
+  --radius: 6px;
+}

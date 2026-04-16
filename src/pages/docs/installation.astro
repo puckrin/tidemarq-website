@@ -1,0 +1,109 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Installation" currentPage="Installation" breadcrumb="Installation">
+  <h1>Installation</h1>
+  <p class="doc-lead">
+    tidemarq runs as a Docker Compose stack. A single command builds and starts everything —
+    the Go backend, the React UI, the SQLite database, and a self-signed TLS certificate.
+  </p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>Docker Engine 24+ and Docker Compose v2</li>
+    <li>Any Linux host (amd64 or arm64), macOS, or Windows with WSL2</li>
+    <li>Ports 8716 and 8717 available on the host</li>
+  </ul>
+
+  <h2>1. Clone the repository</h2>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">shell</div>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">git clone https://github.com/puckrin/tidemarq.git</span>
+<span class="code-prompt">$</span> <span class="code-cmd">cd tidemarq</span></pre>
+  </div>
+
+  <h2>2. Create your config file</h2>
+  <p>
+    Copy the example config and edit it to set your data directory and admin credentials.
+    All options are documented inline.
+  </p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">shell</div>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">cp tidemarq.example.yaml tidemarq.yaml</span>
+<span class="code-prompt">$</span> <span class="code-cmd">$EDITOR tidemarq.yaml</span></pre>
+  </div>
+
+  <p>At minimum, set a strong admin password:</p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">auth:</span>
+  <span class="code-key">admin_username:</span> <span class="code-val">admin</span>
+  <span class="code-key">admin_password:</span> <span class="code-val">change-me-now</span></pre>
+  </div>
+
+  <div class="callout callout-warning">
+    <span class="callout-icon">⚠</span>
+    <p>If no admin password is set, tidemarq generates a random one on first start and prints it to the log. Make sure to capture it before the log scrolls.</p>
+  </div>
+
+  <h2>3. Start the stack</h2>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">shell</div>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose up --build</span></pre>
+  </div>
+
+  <p>
+    The first build takes a minute or two as Go dependencies are downloaded. Subsequent
+    starts are fast. On first run you will see log lines confirming:
+  </p>
+  <ul>
+    <li>TLS certificate generated (unless you supplied your own)</li>
+    <li>JWT signing secret generated and persisted to <code>&lt;data_dir&gt;/.jwt_secret</code></li>
+    <li>Database migrations applied</li>
+    <li>Default admin account created</li>
+    <li>Server listening on <code>:8716</code> (HTTP redirect) and <code>:8717</code> (HTTPS)</li>
+  </ul>
+
+  <h2>4. Open the UI</h2>
+  <p>
+    Navigate to <code>https://localhost:8717</code>. Your browser will warn about the
+    self-signed certificate — accept the exception to proceed. Log in with the admin
+    credentials you configured.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Dashboard screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">✓</span>
+    <p>To use a real TLS certificate, set <code>server.tls_cert</code> and <code>server.tls_key</code>
+    in your config to the paths of your certificate and private key files, then mount them into the container.</p>
+  </div>
+
+  <h2>Upgrading</h2>
+  <p>Pull the latest code and rebuild:</p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">shell</div>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">git pull</span>
+<span class="code-prompt">$</span> <span class="code-cmd">docker compose up --build -d</span></pre>
+  </div>
+  <p>
+    Database migrations run automatically on startup. Your data directory is preserved in
+    the volume mount and is not affected by the rebuild.
+  </p>
+
+  <h2>Running in detached mode</h2>
+  <p>
+    Add <code>-d</code> to run the stack in the background. Use
+    <code>docker compose logs -f</code> to follow logs and
+    <code>docker compose down</code> to stop.
+  </p>
+
+  <h2>Next steps</h2>
+  <ul>
+    <li><a href={u('/docs/configuration')}>Configure tidemarq</a> — review all available settings</li>
+    <li><a href={u('/docs/jobs')}>Create your first sync job</a></li>
+    <li><a href={u('/docs/mounts')}>Connect network mounts</a> (SMB, SFTP)</li>
+  </ul>
+</DocsLayout>

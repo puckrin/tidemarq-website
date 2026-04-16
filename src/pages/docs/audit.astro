@@ -1,0 +1,70 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+<DocsLayout title="Audit Log" currentPage="Audit Log" breadcrumb="Audit Log">
+  <h1>Audit Log</h1>
+  <p class="doc-lead">
+    tidemarq records every significant action to an append-only audit log — sync events,
+    user actions, errors, and system events. The log is searchable and filterable from
+    the UI and exportable as CSV or JSON.
+  </p>
+
+  <h2>What is logged</h2>
+  <table class="doc-table">
+    <thead><tr><th>Event type</th><th>Examples</th></tr></thead>
+    <tbody>
+      <tr><td><code>sync</code></td><td>Job started, file transferred, job completed, job failed</td></tr>
+      <tr><td><code>user</code></td><td>Login, logout, user created, password changed</td></tr>
+      <tr><td><code>system</code></td><td>Server started, migration applied, TLS certificate generated</td></tr>
+      <tr><td><code>error</code></td><td>Transfer error, hash mismatch, mount connection failed</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The Audit Log view</h2>
+  <p>
+    Navigate to <strong>Audit Log</strong> in the sidebar. Entries are displayed newest
+    first with a timestamp, event type badge, job reference (where applicable), and a
+    description.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Audit log screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h2>Filtering</h2>
+  <p>Use the filter bar at the top of the Audit Log view to narrow results:</p>
+  <ul>
+    <li><strong>Job</strong> — show events for a specific sync job</li>
+    <li><strong>Event type</strong> — filter to <code>sync</code>, <code>user</code>, <code>system</code>, or <code>error</code></li>
+    <li><strong>Date range</strong> — set start and end dates</li>
+  </ul>
+  <p>Filters can be combined. Results update as you type.</p>
+
+  <h2>Exporting</h2>
+  <p>
+    Click <strong>Export CSV</strong> or <strong>Export JSON</strong> to download the
+    currently filtered set of audit entries. Exports respect the active filters — to
+    export everything, clear all filters first.
+  </p>
+
+  <h3>CSV format</h3>
+  <p>Columns: <code>id</code>, <code>timestamp</code>, <code>event_type</code>, <code>job_id</code>, <code>job_name</code>, <code>description</code>, <code>actor</code></p>
+
+  <h3>JSON format</h3>
+  <p>An array of objects with the same fields as the CSV, plus any structured metadata
+  attached to the event.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>The audit log is append-only and cannot be edited or deleted from the UI.
+    Retention is currently indefinite — the log grows over time. For long-running
+    installations, export and archive periodically.</p>
+  </div>
+
+  <h2>API access</h2>
+  <p>
+    Audit log entries are available via the REST API at
+    <code>GET /api/v1/audit</code>. Query parameters mirror the UI filters:
+    <code>job_id</code>, <code>event_type</code>, <code>from</code>, <code>to</code>.
+    CSV and JSON export are at <code>/api/v1/audit/export.csv</code> and
+    <code>/api/v1/audit/export.json</code> respectively. All endpoints require a valid JWT.
+  </p>
+</DocsLayout>

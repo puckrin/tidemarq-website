@@ -1,0 +1,56 @@
+---
+const features = [
+  {
+    icon: '⇄',
+    title: 'Three sync modes',
+    body: 'One-way backup preserves everything at the destination. One-way mirror reflects the source exactly, moving deleted files to quarantine rather than deleting them. Two-way sync propagates changes in both directions.',
+  },
+  {
+    icon: '⚡',
+    title: 'Delta transfer',
+    body: 'Rolling Adler-32 checksums combined with BLAKE3 strong hashing mean only changed byte regions are written — not whole files. Local syncs are fast even for large files, with automatic fallback to full streaming for network mounts.',
+  },
+  {
+    icon: '⊕',
+    title: 'Conflict resolution',
+    body: 'When the same file changes on both sides, tidemarq detects it. Resolve automatically with strategies like newest-wins, source-wins, or largest-wins — or route each conflict to the manual review queue in the UI.',
+  },
+  {
+    icon: '◷',
+    title: 'Version history',
+    body: 'Every overwrite snapshots the previous version before writing. Browse and restore past states directly from the web UI, with a configurable retention window and a separate quarantine store for soft-deleted files.',
+  },
+  {
+    icon: '⬡',
+    title: 'Network mounts',
+    body: 'Connect to SMB shares and SFTP servers as source or destination. Credentials are stored encrypted at rest using AES-256-GCM — no plaintext in config files. Connectivity can be tested from the Mounts UI before use.',
+  },
+  {
+    icon: '≡',
+    title: 'Audit log',
+    body: 'A searchable, filterable audit trail for every sync event, user action, and error. Filter by job, event type, or date range. Export as CSV or JSON for ingestion into external monitoring or compliance tools.',
+  },
+];
+---
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label">Features</div>
+      <h2 class="section-heading">Everything you need. Nothing you don't.</h2>
+      <p class="section-sub">
+        Built to handle the full range of directory sync scenarios — from simple scheduled
+        backups to live bidirectional replication with conflict management.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      {features.map(f => (
+        <div class="feature-card">
+          <div class="feature-icon">{f.icon}</div>
+          <h3>{f.title}</h3>
+          <p>{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

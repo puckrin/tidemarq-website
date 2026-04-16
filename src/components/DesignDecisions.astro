@@ -1,0 +1,46 @@
+---
+const decisions = [
+  {
+    num: '01',
+    title: 'No agents on the destination',
+    body: 'tidemarq connects to destinations over standard protocols — SMB and SFTP. There is no software to install on the remote side and no persistent daemon to maintain. If you can reach a share or an SSH endpoint, you can sync to it.',
+  },
+  {
+    num: '02',
+    title: 'Files land exactly where you expect',
+    body: 'There are no hidden metadata directories scattered across your storage, no index databases living alongside your files. tidemarq keeps its own state in a single data directory. Your file trees stay clean and readable by any other tool.',
+  },
+  {
+    num: '03',
+    title: 'Nothing leaves your network',
+    body: 'There are no cloud services, no telemetry, and no registration step. tidemarq makes zero outbound connections except to the mount targets you explicitly configure. Your file names, paths, and contents never leave your infrastructure.',
+  },
+  {
+    num: '04',
+    title: 'One command to run',
+    body: 'docker compose up --build starts the full stack. TLS certificates and admin credentials are auto-generated on first start. There is no separate install step, no certificate authority to configure, and no manual database initialisation.',
+  },
+];
+---
+<section class="decisions-section">
+  <div class="container">
+    <div class="decisions-header">
+      <div class="section-label">Design decisions</div>
+      <h2 class="section-heading">Built around a few firm decisions.</h2>
+      <p class="section-sub">
+        The choices behind tidemarq aren't accidental — each one exists to keep the tool
+        predictable, transparent, and entirely under your control.
+      </p>
+    </div>
+
+    <div class="decisions-grid">
+      {decisions.map(d => (
+        <div class="decision-card">
+          <div class="decision-number">{d.num}</div>
+          <h3>{d.title}</h3>
+          <p>{d.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,93 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Conflicts" currentPage="Conflicts" breadcrumb="Conflicts">
+  <h1>Conflicts</h1>
+  <p class="doc-lead">
+    A conflict occurs in two-way sync when the same file has been modified on both sides
+    since the last successful sync. tidemarq detects conflicts before writing and either
+    resolves them automatically or queues them for manual review.
+  </p>
+
+  <h2>How conflict detection works</h2>
+  <p>
+    After each sync, tidemarq records the hash of every file that was successfully
+    synchronised. On the next run it compares:
+  </p>
+  <ul>
+    <li>The current source hash</li>
+    <li>The current destination hash</li>
+    <li>The last-synced hash stored in the manifest</li>
+  </ul>
+  <p>
+    If <em>both</em> the source and destination hashes differ from the last-synced hash,
+    the file is flagged as a conflict. A change on one side only is not a conflict — it
+    is a normal update that propagates.
+  </p>
+
+  <h2>Conflict resolution strategies</h2>
+  <p>
+    Each job has a configured conflict strategy. You can change it at any time from the
+    job's settings.
+  </p>
+
+  <table class="doc-table">
+    <thead><tr><th>Strategy</th><th>Behaviour</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>ask-user</code></td>
+        <td>The destination copy is renamed with a <code>.conflict.&lt;timestamp&gt;</code> suffix and the conflict is queued for manual review. The source version is written to the destination.</td>
+      </tr>
+      <tr>
+        <td><code>newest-wins</code></td>
+        <td>The file with the more recent last-modified timestamp is kept and written to both sides.</td>
+      </tr>
+      <tr>
+        <td><code>largest-wins</code></td>
+        <td>The larger file by byte size is kept. Useful for append-only logs or growing datasets.</td>
+      </tr>
+      <tr>
+        <td><code>source-wins</code></td>
+        <td>The source version always overwrites the destination. Predictable for one-authoritative-side scenarios.</td>
+      </tr>
+      <tr>
+        <td><code>destination-wins</code></td>
+        <td>The destination version always overwrites the source.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The conflict queue</h2>
+  <p>
+    When the strategy is <code>ask-user</code>, unresolved conflicts appear in the
+    <strong>Conflicts</strong> view. Each entry shows the file path, the job it came from,
+    and a side-by-side comparison of the source and destination versions.
+  </p>
+
+  <div class="doc-screenshot-placeholder">Conflict queue screenshot — run <code>npm run screenshots</code> to capture</div>
+
+  <h3>Resolving a conflict manually</h3>
+  <p>From the Conflicts view, for each queued conflict you can:</p>
+  <ul>
+    <li><strong>Keep source</strong> — overwrite the destination with the source version; discard the <code>.conflict.*</code> copy</li>
+    <li><strong>Keep destination</strong> — overwrite the source with the destination version</li>
+    <li><strong>Keep both</strong> — leave the <code>.conflict.*</code> file alongside the source version; the conflict is marked resolved without discarding either copy</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>The <code>.conflict.&lt;timestamp&gt;</code> file is a full copy of the destination
+    version at the time the conflict was detected — it is not lost regardless of which
+    resolution action you choose.</p>
+  </div>
+
+  <h2>Conflicts and version history</h2>
+  <p>
+    When a conflict is resolved by overwriting a file, the previous version is snapshotted
+    to version history before the write, just like any other overwrite. See
+    <a href={u('/docs/versioning')}>Version History</a> if you need to recover a
+    pre-resolution state.
+  </p>
+</DocsLayout>

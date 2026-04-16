@@ -1,0 +1,105 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
+---
+<DocsLayout title="Configuration" currentPage="Configuration" breadcrumb="Configuration">
+  <h1>Configuration</h1>
+  <p class="doc-lead">
+    tidemarq is configured via a YAML file and optionally overridden by environment variables.
+    The config is loaded once at startup — there is no hot-reload.
+  </p>
+
+  <h2>Config file location</h2>
+  <p>
+    By default tidemarq looks for <code>tidemarq.yaml</code> in the current working directory,
+    then <code>/etc/tidemarq/tidemarq.yaml</code>. The path can be overridden with the
+    <code>TIDEMARQ_CONFIG</code> environment variable.
+  </p>
+  <p>
+    The Docker Compose file mounts <code>./tidemarq.yaml</code> from the project root to
+    <code>/etc/tidemarq/tidemarq.yaml</code> inside the container.
+  </p>
+
+  <h2>Full reference</h2>
+  <p>
+    Every configuration key is documented in
+    <a href="https://github.com/puckrin/tidemarq/blob/main/tidemarq.example.yaml" target="_blank" rel="noopener noreferrer"><code>tidemarq.example.yaml</code></a>
+    in the repository. The sections below cover the most commonly changed settings.
+  </p>
+
+  <h2>Key settings</h2>
+
+  <h3>Data directory</h3>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">data_dir:</span> <span class="code-val">/data</span>   <span class="code-comment"># where the database, versions, and quarantine live</span></pre>
+  </div>
+  <p>
+    The data directory must be on a persistent volume. In the default Docker Compose setup
+    this is the <code>./data</code> host directory.
+  </p>
+
+  <h3>Authentication</h3>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">auth:</span>
+  <span class="code-key">admin_username:</span> <span class="code-val">admin</span>
+  <span class="code-key">admin_password:</span> <span class="code-val">your-strong-password</span>
+  <span class="code-comment">  # jwt_secret: leave blank to auto-generate on first start</span></pre>
+  </div>
+  <p>
+    The admin account is created on first start if no users exist. The JWT signing secret
+    is generated and persisted to <code>&lt;data_dir&gt;/.jwt_secret</code> if not provided
+    explicitly. Passwords are always stored bcrypt-hashed.
+  </p>
+
+  <h3>Server &amp; TLS</h3>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">server:</span>
+  <span class="code-key">http_port:</span>  <span class="code-val">8716</span>   <span class="code-comment"># HTTP — redirects to HTTPS</span>
+  <span class="code-key">https_port:</span> <span class="code-val">8717</span>   <span class="code-comment"># HTTPS — main UI and API</span>
+  <span class="code-comment">  # tls_cert: /path/to/cert.pem   # omit to use auto-generated self-signed cert</span>
+  <span class="code-comment">  # tls_key:  /path/to/key.pem</span></pre>
+  </div>
+
+  <h3>Retention</h3>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">retention:</span>
+  <span class="code-key">quarantine_days:</span>     <span class="code-val">30</span>   <span class="code-comment"># soft-deleted files kept for N days</span>
+  <span class="code-key">version_history_days:</span> <span class="code-val">90</span>   <span class="code-comment"># file version snapshots kept for N days</span></pre>
+  </div>
+
+  <h2>Environment variable overrides</h2>
+  <p>
+    Any config key can be overridden with an environment variable using the
+    <code>TIDEMARQ_</code> prefix and double underscore as separator. For example:
+  </p>
+  <table class="doc-table">
+    <thead>
+      <tr>
+        <th>Environment variable</th>
+        <th>Config key</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TIDEMARQ_DATA_DIR</code></td><td><code>data_dir</code></td></tr>
+      <tr><td><code>TIDEMARQ_AUTH__ADMIN_PASSWORD</code></td><td><code>auth.admin_password</code></td></tr>
+      <tr><td><code>TIDEMARQ_AUTH__JWT_SECRET</code></td><td><code>auth.jwt_secret</code></td></tr>
+      <tr><td><code>TIDEMARQ_SERVER__HTTPS_PORT</code></td><td><code>server.https_port</code></td></tr>
+    </tbody>
+  </table>
+  <p>
+    Environment variables take precedence over the config file. This is the recommended
+    approach for secrets in production — pass <code>TIDEMARQ_AUTH__ADMIN_PASSWORD</code>
+    as a Docker secret or from a secrets manager rather than storing it in the YAML file.
+  </p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <p>Config is read once at startup. Changing the config file or environment variables
+    requires a container restart to take effect.</p>
+  </div>
+</DocsLayout>
