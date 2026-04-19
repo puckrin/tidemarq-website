@@ -16,7 +16,7 @@ const u = (path: string) => `${base}${path}`;
     Click <strong>New Job</strong> on the Sync Jobs page to open the five-step wizard.
   </p>
 
-  <div class="doc-screenshot-placeholder">New job wizard screenshot — run <code>npm run screenshots</code> to capture</div>
+  <img class="doc-screenshot" src={u('/screenshots/new-job-wizard.png')} alt="New job wizard — step 1" />
 
   <h3>Step 1 — Name &amp; mode</h3>
   <p>Give the job a name and choose a sync mode (see below).</p>
@@ -95,7 +95,7 @@ const u = (path: string) => `${base}${path}`;
     being processed. No page refresh required.
   </p>
 
-  <div class="doc-screenshot-placeholder">Job detail progress screenshot — run <code>npm run screenshots</code> to capture</div>
+  <img class="doc-screenshot" src={u('/screenshots/job-detail.png')} alt="Job detail view showing live progress" />
 
   <h2>Pausing &amp; resuming</h2>
   <p>

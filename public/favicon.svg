@@ -1,5 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="5" fill="#0A4452"/>
-  <text x="50%" y="52%" dominant-baseline="central" text-anchor="middle"
-    font-family="Arial" font-size="13" font-weight="700" fill="#5DC4D4">tm</text>
+  <rect width="32" height="32" rx="6" fill="#0A4452"/>
+  <path d="M5,13 C8,9 10,9 13,13 C16,17 18,17 21,13 C24,9 26,9 27,13"
+        stroke="#5DC4D4" stroke-width="3" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="14.5" y="13" width="3" height="13" rx="1.5" fill="#5DC4D4"/>
 </svg>

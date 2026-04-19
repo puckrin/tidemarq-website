@@ -1,5 +1,7 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
 ---
 <DocsLayout title="Mounts" currentPage="Mounts" breadcrumb="Mounts">
   <h1>Mounts</h1>
@@ -16,7 +18,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     edit existing ones, test connectivity, and delete mounts that are no longer needed.
   </p>
 
-  <div class="doc-screenshot-placeholder">Mounts view screenshot — run <code>npm run screenshots</code> to capture</div>
+  <img class="doc-screenshot" src={u('/screenshots/mounts.png')} alt="Mounts view showing configured SMB and SFTP mounts" />
 
   <h2>SMB mounts</h2>
   <p>

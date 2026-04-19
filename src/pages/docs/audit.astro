@@ -1,5 +1,7 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (path: string) => `${base}${path}`;
 ---
 <DocsLayout title="Audit Log" currentPage="Audit Log" breadcrumb="Audit Log">
   <h1>Audit Log</h1>
@@ -27,7 +29,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     description.
   </p>
 
-  <div class="doc-screenshot-placeholder">Audit log screenshot — run <code>npm run screenshots</code> to capture</div>
+  <img class="doc-screenshot" src={u('/screenshots/audit.png')} alt="Audit log with filters and event entries" />
 
   <h2>Filtering</h2>
   <p>Use the filter bar at the top of the Audit Log view to narrow results:</p>

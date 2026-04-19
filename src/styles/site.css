@@ -111,19 +111,10 @@ code, kbd, pre {
   text-decoration: none;
 }
 
-.nav-logo-mark {
-  width: 30px;
-  height: 30px;
-  background: var(--dark-teal);
-  border: 1.5px solid rgba(93, 196, 212, 0.3);
-  border-radius: 5px;
+.nav-logo-text {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--light-teal);
-  letter-spacing: -0.02em;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .nav-logo-name {
@@ -131,6 +122,16 @@ code, kbd, pre {
   font-weight: 700;
   color: var(--ghost-teal);
   letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.nav-logo-tag {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--pale-teal);
+  opacity: 0.7;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .nav-links {
@@ -168,7 +169,7 @@ code, kbd, pre {
 /* ─── Hero ──────────────────────────────────────────────────── */
 
 .hero {
-  background: linear-gradient(155deg, var(--deep-teal) 0%, var(--dark-teal) 55%, #0c5263 100%);
+  background: linear-gradient(to right, var(--mid-teal) 0%, var(--dark-teal) 45%, var(--deep-teal) 100%);
   padding: 88px 24px 0;
   text-align: center;
   overflow: hidden;
@@ -179,8 +180,18 @@ code, kbd, pre {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 900px 600px at 50% -80px, rgba(26, 138, 158, 0.18) 0%, transparent 70%);
+  background: radial-gradient(ellipse 900px 500px at 30% 0%, rgba(26, 138, 158, 0.22) 0%, transparent 65%);
   pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .hero-eyebrow {
@@ -246,8 +257,9 @@ code, kbd, pre {
 
 .hero-screenshot-wrap {
   position: relative;
-  max-width: 1020px;
+  width: 1020px;
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .hero-browser {
@@ -305,7 +317,7 @@ code, kbd, pre {
 /* ─── Features Section ──────────────────────────────────────── */
 
 .features-section {
-  background: var(--dark-teal);
+  background: #061e28;
   padding: 96px 24px;
 }
 
@@ -344,7 +356,7 @@ code, kbd, pre {
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  font-size: 18px;
+  color: var(--light-teal);
 }
 
 .feature-card h3 {
@@ -372,8 +384,8 @@ code, kbd, pre {
 .decisions-section .section-sub { color: var(--slate); }
 
 .decisions-header {
-  max-width: 580px;
-  margin-bottom: 56px;
+  max-width: 720px;
+  margin-bottom: 48px;
 }
 
 .decisions-grid {
@@ -389,15 +401,6 @@ code, kbd, pre {
   border: 1px solid var(--light-border);
   border-radius: 8px;
   padding: 32px 28px;
-}
-
-.decision-number {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--bright-teal);
-  margin-bottom: 14px;
 }
 
 .decision-card h3 {

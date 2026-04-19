@@ -1,34 +1,34 @@
 ---
 const features = [
   {
-    icon: '⇄',
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>`,
     title: 'Three sync modes',
-    body: 'One-way backup preserves everything at the destination. One-way mirror reflects the source exactly, moving deleted files to quarantine rather than deleting them. Two-way sync propagates changes in both directions.',
+    body: 'One-way backup preserves everything at the destination. One-way mirror reflects the source exactly, moving deleted files to quarantine. Two-way sync propagates changes in both directions.',
   },
   {
-    icon: '⚡',
-    title: 'Delta transfer',
-    body: 'Rolling Adler-32 checksums combined with BLAKE3 strong hashing mean only changed byte regions are written — not whole files. Local syncs are fast even for large files, with automatic fallback to full streaming for network mounts.',
-  },
-  {
-    icon: '⊕',
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>`,
     title: 'Conflict resolution',
-    body: 'When the same file changes on both sides, tidemarq detects it. Resolve automatically with strategies like newest-wins, source-wins, or largest-wins — or route each conflict to the manual review queue in the UI.',
+    body: 'When the same file changes on both sides, tidemarq detects it. Resolve automatically with strategies like newest-wins or source-wins — or route each conflict to the manual review queue in the UI.',
   },
   {
-    icon: '◷',
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
     title: 'Version history',
-    body: 'Every overwrite snapshots the previous version before writing. Browse and restore past states directly from the web UI, with a configurable retention window and a separate quarantine store for soft-deleted files.',
+    body: 'Before every overwrite, tidemarq snapshots the existing file. Browse the full history per file from the web UI and restore any previous version in one click, with configurable retention.',
   },
   {
-    icon: '⬡',
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>`,
     title: 'Network mounts',
     body: 'Connect to SMB shares and SFTP servers as source or destination. Credentials are stored encrypted at rest using AES-256-GCM — no plaintext in config files. Connectivity can be tested from the Mounts UI before use.',
   },
   {
-    icon: '≡',
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>`,
     title: 'Audit log',
-    body: 'A searchable, filterable audit trail for every sync event, user action, and error. Filter by job, event type, or date range. Export as CSV or JSON for ingestion into external monitoring or compliance tools.',
+    body: 'Every sync event, user action, and error is written to an append-only audit log. Search and filter by job, event type, or date range directly in the UI. Export as CSV or JSON at any time.',
+  },
+  {
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+    title: 'Delta transfer',
+    body: 'Rolling Adler-32 checksums combined with BLAKE3 strong hashing mean only changed byte regions are written — not whole files. Local syncs are fast even for large files, with automatic fallback to full streaming for network mounts.',
   },
 ];
 ---
@@ -36,8 +36,8 @@ const features = [
   <div class="container">
     <div class="features-header">
       <div class="section-label">Features</div>
-      <h2 class="section-heading">Everything you need. Nothing you don't.</h2>
-      <p class="section-sub">
+      <h2 class="section-heading">Keeping your directories synced has never been easier.</h2>
+      <p class="section-sub" style="text-align:center; margin: 0 auto;">
         Built to handle the full range of directory sync scenarios — from simple scheduled
         backups to live bidirectional replication with conflict management.
       </p>
@@ -46,7 +46,7 @@ const features = [
     <div class="feature-grid">
       {features.map(f => (
         <div class="feature-card">
-          <div class="feature-icon">{f.icon}</div>
+          <div class="feature-icon" set:html={f.icon} />
           <h3>{f.title}</h3>
           <p>{f.body}</p>
         </div>

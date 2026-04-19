@@ -33,18 +33,16 @@ mkdirSync(OUT_DIR, { recursive: true });
 
 async function login(page) {
   await page.goto(`${BASE_URL}/login`);
-  await page.waitForSelector('input[name="username"], input[placeholder*="sername"], input[type="text"]');
-  const userInput = page.locator('input[name="username"]').or(page.locator('input[type="text"]')).first();
-  const passInput = page.locator('input[name="password"]').or(page.locator('input[type="password"]')).first();
-  await userInput.fill(USERNAME);
-  await passInput.fill(PASSWORD);
-  await page.click('button[type="submit"]');
-  await page.waitForSelector('.sidebar, [class*="sidebar"]', { timeout: 10_000 });
+  await page.waitForSelector('input[type="text"], input[id*="username"]');
+  await page.locator('input[type="text"], input[id*="username"]').first().fill(USERNAME);
+  await page.locator('input[type="password"], input[id*="password"]').first().fill(PASSWORD);
+  await page.locator('button:has-text("Sign in"), button[type="submit"]').first().click();
+  await page.waitForSelector('.sidebar, nav[class*="sidebar"], aside', { timeout: 10_000 });
   console.log('  logged in');
 }
 
 async function nav(page, linkText) {
-  await page.click(`.sidebar a:has-text("${linkText}"), nav a:has-text("${linkText}")`);
+  await page.click(`.nav-item:has-text("${linkText}")`);
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(600);
 }
@@ -75,25 +73,22 @@ async function main() {
   await nav(page, 'Sync Jobs');
   await shot(page, 'jobs', 'Sync Jobs list');
 
-  // Job detail — click first job if one exists
+  // Job detail — click first job row if one exists
   try {
-    await page.click('table tbody tr:first-child, [class*="job-row"]:first-child', { timeout: 3000 });
+    await page.click('table tbody tr:first-child td:first-child, .job-row:first-child, [class*="job"]:first-child', { timeout: 3000 });
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(600);
     await shot(page, 'job-detail', 'Job detail');
-    await page.goBack();
-    await page.waitForLoadState('networkidle');
   } catch {
     console.log('  ! job-detail skipped — no jobs exist yet');
   }
 
-  // New job wizard — step 1
+  // New job wizard — navigate back to jobs list first, then open wizard
+  await nav(page, 'Sync Jobs');
   try {
-    await page.click('button:has-text("New Job"), a:has-text("New Job")', { timeout: 3000 });
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(400);
+    await page.click('button:has-text("New Job"), button:has-text("New job"), a:has-text("New Job")', { timeout: 3000 });
+    await page.waitForTimeout(600);
     await shot(page, 'new-job-wizard', 'New job wizard');
-    // dismiss
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
   } catch {

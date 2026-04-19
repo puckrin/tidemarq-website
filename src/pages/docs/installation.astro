@@ -17,23 +17,11 @@ const u = (path: string) => `${base}${path}`;
     <li>Ports 8716 and 8717 available on the host</li>
   </ul>
 
-  <h2>1. Clone the repository</h2>
-  <div class="doc-codeblock">
-    <div class="doc-codeblock-label">shell</div>
-    <pre><span class="code-prompt">$</span> <span class="code-cmd">git clone https://github.com/puckrin/tidemarq.git</span>
-<span class="code-prompt">$</span> <span class="code-cmd">cd tidemarq</span></pre>
-  </div>
-
-  <h2>2. Create your config file</h2>
+  <h2>1. Create your config file</h2>
   <p>
-    Copy the example config and edit it to set your data directory and admin credentials.
-    All options are documented inline.
+    Download <a href="https://github.com/puckrin/tidemarq/blob/main/tidemarq.example.yaml" target="_blank" rel="noopener noreferrer"><code>tidemarq.example.yaml</code></a>
+    and save it as <code>tidemarq.yaml</code> in your project directory. All options are documented inline.
   </p>
-  <div class="doc-codeblock">
-    <div class="doc-codeblock-label">shell</div>
-    <pre><span class="code-prompt">$</span> <span class="code-cmd">cp tidemarq.example.yaml tidemarq.yaml</span>
-<span class="code-prompt">$</span> <span class="code-cmd">$EDITOR tidemarq.yaml</span></pre>
-  </div>
 
   <p>At minimum, set a strong admin password:</p>
   <div class="doc-codeblock">
@@ -48,7 +36,7 @@ const u = (path: string) => `${base}${path}`;
     <p>If no admin password is set, tidemarq generates a random one on first start and prints it to the log. Make sure to capture it before the log scrolls.</p>
   </div>
 
-  <h2>3. Start the stack</h2>
+  <h2>2. Start the stack</h2>
   <div class="doc-codeblock">
     <div class="doc-codeblock-label">shell</div>
     <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose up --build</span></pre>
@@ -66,14 +54,14 @@ const u = (path: string) => `${base}${path}`;
     <li>Server listening on <code>:8716</code> (HTTP redirect) and <code>:8717</code> (HTTPS)</li>
   </ul>
 
-  <h2>4. Open the UI</h2>
+  <h2>3. Open the UI</h2>
   <p>
     Navigate to <code>https://localhost:8717</code>. Your browser will warn about the
     self-signed certificate — accept the exception to proceed. Log in with the admin
     credentials you configured.
   </p>
 
-  <div class="doc-screenshot-placeholder">Dashboard screenshot — run <code>npm run screenshots</code> to capture</div>
+  <img class="doc-screenshot" src={u('/screenshots/dashboard.png')} alt="tidemarq dashboard after first login" />
 
   <div class="callout callout-tip">
     <span class="callout-icon">✓</span>
