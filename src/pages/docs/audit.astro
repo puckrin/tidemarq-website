@@ -54,11 +54,25 @@ const u = (path: string) => `${base}${path}`;
   <p>An array of objects with the same fields as the CSV, plus any structured metadata
   attached to the event.</p>
 
+  <h2>Retention</h2>
+  <p>
+    Audit log entries are retained for the number of days set in
+    <code>retention.audit_log_retention_days</code> (default: 90). A daily sweep at
+    midnight prunes entries older than the configured limit. Retention is configured
+    in <strong>Settings → General</strong> alongside quarantine and version history
+    retention, or in <code>tidemarq.yaml</code>:
+  </p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">tidemarq.yaml</div>
+    <pre><span class="code-key">retention:</span>
+  <span class="code-key">audit_log_retention_days:</span> <span class="code-val">90</span></pre>
+  </div>
+
   <div class="callout callout-info">
     <span class="callout-icon">ℹ</span>
     <p>The audit log is append-only and cannot be edited or deleted from the UI.
-    Retention is currently indefinite — the log grows over time. For long-running
-    installations, export and archive periodically.</p>
+    Export entries before they age out of the retention window if you need a permanent
+    record.</p>
   </div>
 
   <h2>API access</h2>

@@ -19,7 +19,11 @@ const u = (path: string) => `${base}${path}`;
   <img class="doc-screenshot" src={u('/screenshots/new-job-wizard.png')} alt="New job wizard — step 1" />
 
   <h3>Step 1 — Name &amp; mode</h3>
-  <p>Give the job a name and choose a sync mode (see below).</p>
+  <p>
+    Give the job a name and choose a sync mode (see below). Job names must be unique —
+    the UI and API will return an error if you try to create or rename a job to a name
+    that is already in use.
+  </p>
 
   <h3>Step 2 — Source</h3>
   <p>
@@ -29,7 +33,10 @@ const u = (path: string) => `${base}${path}`;
   </p>
 
   <h3>Step 3 — Destination</h3>
-  <p>Same options as source — local path or a configured mount.</p>
+  <p>
+    Same options as source — local path or a configured mount. For local filesystem jobs,
+    the source and destination paths cannot be the same.
+  </p>
 
   <h3>Step 4 — Schedule &amp; triggers</h3>
   <p>Choose how the job is triggered:</p>

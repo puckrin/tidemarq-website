@@ -68,8 +68,9 @@ const u = (path: string) => `${base}${path}`;
   <div class="doc-codeblock">
     <div class="doc-codeblock-label">tidemarq.yaml</div>
     <pre><span class="code-key">retention:</span>
-  <span class="code-key">quarantine_days:</span>     <span class="code-val">30</span>   <span class="code-comment"># soft-deleted files kept for N days</span>
-  <span class="code-key">version_history_days:</span> <span class="code-val">90</span>   <span class="code-comment"># file version snapshots kept for N days</span></pre>
+  <span class="code-key">quarantine_days:</span>        <span class="code-val">30</span>   <span class="code-comment"># soft-deleted files kept for N days</span>
+  <span class="code-key">version_history_days:</span>   <span class="code-val">90</span>   <span class="code-comment"># file version snapshots kept for N days</span>
+  <span class="code-key">audit_log_retention_days:</span> <span class="code-val">90</span>   <span class="code-comment"># audit log entries kept for N days</span></pre>
   </div>
 
   <h2>Environment variable overrides</h2>
