@@ -6,8 +6,9 @@ const u = (path: string) => `${base}${path}`;
 <DocsLayout title="Installation" currentPage="Installation" breadcrumb="Installation">
   <h1>Installation</h1>
   <p class="doc-lead">
-    tidemarq runs as a Docker Compose stack. A single command builds and starts everything —
-    the Go backend, the React UI, the SQLite database, and a self-signed TLS certificate.
+    tidemarq runs as a Docker Compose stack using a pre-built image. A single command starts
+    everything — the Go backend, the React UI, the SQLite database, and a self-signed TLS certificate.
+    No git clone required.
   </p>
 
   <h2>Prerequisites</h2>
@@ -17,34 +18,33 @@ const u = (path: string) => `${base}${path}`;
     <li>Ports 8716 and 8717 available on the host</li>
   </ul>
 
-  <h2>1. Create your config file</h2>
+  <h2>1. Get the Compose file</h2>
   <p>
-    Download <a href="https://github.com/puckrin/tidemarq/blob/main/tidemarq.example.yaml" target="_blank" rel="noopener noreferrer"><code>tidemarq.example.yaml</code></a>
-    and save it as <code>tidemarq.yaml</code> in your project directory. All options are documented inline.
+    Download <a href="https://github.com/puckrin/tidemarq/releases/latest/download/docker-compose.yml" target="_blank" rel="noopener noreferrer"><code>docker-compose.yml</code></a>
+    and place it in a new directory for tidemarq. Then set your admin password by uncommenting the
+    <code>TIDEMARQ_ADMIN_PASSWORD</code> line:
   </p>
 
-  <p>At minimum, set a strong admin password:</p>
   <div class="doc-codeblock">
-    <div class="doc-codeblock-label">tidemarq.yaml</div>
-    <pre><span class="code-key">auth:</span>
-  <span class="code-key">admin_username:</span> <span class="code-val">admin</span>
-  <span class="code-key">admin_password:</span> <span class="code-val">change-me-now</span></pre>
+    <div class="doc-codeblock-label">docker-compose.yml (excerpt)</div>
+    <pre><span class="code-key">environment:</span>
+  <span class="code-val">- TIDEMARQ_ADMIN_PASSWORD=change-me-now</span></pre>
   </div>
 
   <div class="callout callout-warning">
     <span class="callout-icon">⚠</span>
-    <p>If no admin password is set, tidemarq generates a random one on first start and prints it to the log. Make sure to capture it before the log scrolls.</p>
+    <p>If <code>TIDEMARQ_ADMIN_PASSWORD</code> is not set, the default password is <code>admin123</code>. Change it immediately after first login via Settings → Users.</p>
   </div>
 
   <h2>2. Start the stack</h2>
   <div class="doc-codeblock">
     <div class="doc-codeblock-label">shell</div>
-    <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose up --build</span></pre>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose up</span></pre>
   </div>
 
   <p>
-    The first build takes a minute or two as Go dependencies are downloaded. Subsequent
-    starts are fast. On first run you will see log lines confirming:
+    The first start pulls the image from <code>ghcr.io/puckrin/tidemarq:latest</code> (typically under a minute).
+    On first run you will see log lines confirming:
   </p>
   <ul>
     <li>TLS certificate generated (unless you supplied your own)</li>
@@ -70,15 +70,15 @@ const u = (path: string) => `${base}${path}`;
   </div>
 
   <h2>Upgrading</h2>
-  <p>Pull the latest code and rebuild:</p>
+  <p>Pull the latest image and restart:</p>
   <div class="doc-codeblock">
     <div class="doc-codeblock-label">shell</div>
-    <pre><span class="code-prompt">$</span> <span class="code-cmd">git pull</span>
-<span class="code-prompt">$</span> <span class="code-cmd">docker compose up --build -d</span></pre>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose pull</span>
+<span class="code-prompt">$</span> <span class="code-cmd">docker compose up -d</span></pre>
   </div>
   <p>
     Database migrations run automatically on startup. Your data directory is preserved in
-    the volume mount and is not affected by the rebuild.
+    the volume mount and is not affected by the upgrade.
   </p>
 
   <h2>Running in detached mode</h2>
