@@ -88,6 +88,31 @@ const u = (path: string) => `${base}${path}`;
     <code>docker compose down</code> to stop.
   </p>
 
+  <h2>Exposing host directories</h2>
+  <p>
+    To make directories on the host machine available as sync sources or destinations, add
+    bind mounts to the <code>volumes</code> section of <code>docker-compose.yml</code>:
+  </p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">docker-compose.yml</div>
+    <pre><span class="code-key">volumes:</span>
+  <span class="code-val">- ./data:/data</span>
+
+  <span class="code-comment"># Add your directories below:</span>
+  <span class="code-val">- /srv/media:/mnt/media</span>
+  <span class="code-val">- /srv/documents:/mnt/documents:ro</span>   <span class="code-comment"># :ro = read-only</span>
+  <span class="code-val">- /srv/backups:/mnt/backups</span></pre>
+  </div>
+  <p>
+    The path on the <strong>right-hand side</strong> (e.g. <code>/mnt/media</code>) is the
+    container path — this is what you enter as a source or destination when creating a sync
+    job in the UI. Restart the stack after editing:
+  </p>
+  <div class="doc-codeblock">
+    <div class="doc-codeblock-label">shell</div>
+    <pre><span class="code-prompt">$</span> <span class="code-cmd">docker compose up -d</span></pre>
+  </div>
+
   <h2>Next steps</h2>
   <ul>
     <li><a href={u('/docs/configuration')}>Configure tidemarq</a> — review all available settings</li>
