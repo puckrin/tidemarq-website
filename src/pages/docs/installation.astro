@@ -20,20 +20,14 @@ const u = (path: string) => `${base}${path}`;
 
   <h2>1. Get the Compose file</h2>
   <p>
-    Download <a href="https://github.com/puckrin/tidemarq/releases/latest/download/docker-compose.yml" target="_blank" rel="noopener noreferrer"><code>docker-compose.yml</code></a>
-    and place it in a new directory for tidemarq. Then set your admin password by uncommenting the
-    <code>TIDEMARQ_ADMIN_PASSWORD</code> line:
+    Grab <a href="https://github.com/puckrin/tidemarq/blob/main/docker-compose.yml" target="_blank" rel="noopener noreferrer"><code>docker-compose.yml</code></a>
+    from the repository (use the <strong>Raw</strong> or <strong>Download</strong> buttons on GitHub) and place
+    it in a new directory for tidemarq.
   </p>
-
-  <div class="doc-codeblock">
-    <div class="doc-codeblock-label">docker-compose.yml (excerpt)</div>
-    <pre><span class="code-key">environment:</span>
-  <span class="code-val">- TIDEMARQ_ADMIN_PASSWORD=change-me-now</span></pre>
-  </div>
 
   <div class="callout callout-warning">
     <span class="callout-icon">⚠</span>
-    <p>If <code>TIDEMARQ_ADMIN_PASSWORD</code> is not set, the default password is <code>admin123</code>. Change it immediately after first login via Settings → Users.</p>
+    <p>On first start tidemarq creates an admin account with username <code>admin</code> and password <code>admin123</code>. Log in and change the password immediately via Settings → Users.</p>
   </div>
 
   <h2>2. Start the stack</h2>

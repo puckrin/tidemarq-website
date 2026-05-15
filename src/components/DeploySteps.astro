@@ -14,18 +14,18 @@ const u = (path: string) => `${base}${path}`;
     <div class="deploy-steps">
       <div class="deploy-step">
         <div class="step-num">1</div>
-        <h3>Configure</h3>
-        <p>Download <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">docker-compose.yml</code> and set your admin password via <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">TIDEMARQ_ADMIN_PASSWORD</code></p>
+        <h3>Grab the Compose file</h3>
+        <p>Copy <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">docker-compose.yml</code> from the repository into a new directory</p>
       </div>
       <div class="deploy-step">
         <div class="step-num">2</div>
         <h3>Start the stack</h3>
-        <p>Run <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">docker compose up</code> — the image is pulled automatically, TLS and admin credentials are generated on first start</p>
+        <p>Run <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">docker compose up</code> — the image is pulled, the TLS cert is generated, and the admin account is seeded automatically</p>
       </div>
       <div class="deploy-step">
         <div class="step-num">3</div>
-        <h3>Open the UI</h3>
-        <p>Browse to <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">https://localhost:8717</code> and log in with the credentials shown in the startup log</p>
+        <h3>Log in and secure the account</h3>
+        <p>Browse to <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">https://localhost:8717</code>, sign in as <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">admin</code> / <code style="font-size:11px;color:var(--pale-teal);background:rgba(163,221,230,0.08);padding:2px 5px;border-radius:3px;">admin123</code>, then change the password via Settings → Users</p>
       </div>
     </div>
 
